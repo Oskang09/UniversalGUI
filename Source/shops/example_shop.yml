@@ -1,0 +1,36 @@
+npc_id: 1
+gui_rows: 6
+gui_name: '123'
+command: 'etc_shop'
+msg:
+    fail: ''
+    sucess: ''
+gui:
+    1:
+        id: 1
+        name: 'TestUI'
+        data: 1
+        lore:
+        - '123'
+        - 'l2l3'
+event:
+    1:
+        msg:
+            fail: 'asdasd'
+            sucess: 'asdasdd'
+        requirement:
+            1:
+                item:
+                    id: 1
+                    name: '123'
+                    data: 1
+                    lore:
+                    - '123'
+                    amount: 1
+            2:  
+                vault:
+                    money: 2.0
+        reward:
+            1:
+                vault:
+                    money: 1.0

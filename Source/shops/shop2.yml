@@ -1,0 +1,7 @@
+npc_id: 1
+gui_rows: 0
+gui_name: ''
+command: ''
+msg:
+  fail: ''
+  sucess: ''

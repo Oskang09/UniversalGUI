@@ -1,0 +1,10 @@
+main: me.oska.ugui.UniversalGUI
+name: UniversalGUI
+version: 2.0
+author: Oska
+description: Customize your shop requirement, reward and display.
+softdepend: [Citizens]
+commands:
+    ugui:
+        description: UniversalGUI Shop command
+        usage: /ugui open [shop]
