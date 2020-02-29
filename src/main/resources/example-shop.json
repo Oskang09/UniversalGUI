@@ -1,0 +1,61 @@
+{
+  "title": "Test",
+  "row": 6,
+  "message": {
+    "const": "You have %money%",
+    "fulfilled": "You have enough money",
+    "rejected": "You have not enough money."
+  },
+  "activator": {
+    "citizens": {
+      "npc": 1,
+      "permission": ""
+    },
+    "interact": {
+      "item": null,
+      "permission": ""
+    },
+    "command": {
+      "cmd": "test",
+      "permission": ""
+    }
+  },
+  "items": {
+    "1": {
+      "message": {
+        "const": "You have %money%",
+        "fulfilled": "You have enough money",
+        "rejected": "You have not enough money."
+      },
+      "item": {
+        "type": "AIR",
+        "name": "123",
+        "data": 1,
+        "amount": 11,
+        "lore": [
+          "123"
+        ]
+      },
+      "requirement": [
+        {
+          "module": "vault",
+          "display": ""
+        },
+        {
+          "module": "item",
+          "display": ""
+        }
+      ],
+      "rewards": [
+        {
+          "module": "vault",
+          "display": ""
+        },
+        {
+          "module": "item",
+          "display": ""
+        }
+      ]
+    }
+  }
+}

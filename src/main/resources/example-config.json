@@ -1,0 +1,14 @@
+{
+  // TODO: move use_parallel globally & api as config
+  "use_parallel": true,
+  "api": {
+    "api-shop-1": {
+      "update": "300",
+      "method": "GET",
+      "endpoint": "https://api.universalgui.com/shops/1",
+      "filename": "api-shop-1",
+      "format": "json",
+      "headers": {}
+    }
+  }
+}

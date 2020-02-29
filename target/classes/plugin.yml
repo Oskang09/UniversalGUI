@@ -1,0 +1,11 @@
+main: me.oska.UniversalGUI
+name: UniversalGUI
+version: 0.0.1
+author: Oska
+api-version: 1.13
+description: Customize User Interface via Configuration and Extensible Modules.
+softdepend: [ Citizens, PlaceholderAPI ]
+commands:
+  ugui:
+    description: UniversalGUI default command.
+    usage: /ugui
