@@ -8,3 +8,9 @@ Customize your shop requirement, reward and display.
 * Run full test for async related
 * Add requirement & rewards modules
 * Update wiki
+
+# Module plan to support
+
+* ItemStack ( require & reward )
+* Vault ( require & reward )
+* Execute Command ( reward )
