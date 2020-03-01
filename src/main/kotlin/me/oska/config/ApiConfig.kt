@@ -7,6 +7,7 @@ import de.leonhard.storage.Toml
 import de.leonhard.storage.Yaml
 import de.leonhard.storage.sections.FlatFileSection
 import me.oska.UniversalGUI
+import me.oska.config.shop.ShopConfig
 import me.oska.manager.ShopManager
 import util.HttpUtil
 import java.io.InputStream
@@ -30,10 +31,11 @@ class ApiConfig(config: FlatFileSection) {
         const val KEY_UPDATE = "update";
     }
 
-
     init {
         val headers = config.getMap(KEY_HEADER)
         if (headers != null) {
+
+            @Suppress("UNCHECKED_CAST")
             this.headers = headers as Map<String, String>
         }
 
@@ -51,7 +53,6 @@ class ApiConfig(config: FlatFileSection) {
             http.setHeader(headers!!);
         }
         val stream: InputStream = http.get();
-
         val shop = when (format) {
             "json" -> ShopConfig(Json(name, UniversalGUI.getApiPath().path, stream))
             "yaml" -> ShopConfig(Yaml(name, UniversalGUI.getApiPath().path, stream))

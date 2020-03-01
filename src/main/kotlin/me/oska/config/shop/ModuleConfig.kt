@@ -1,4 +1,4 @@
-package me.oska.config
+package me.oska.config.shop
 
 import me.oska.manager.ModuleManager
 import me.oska.module.Module

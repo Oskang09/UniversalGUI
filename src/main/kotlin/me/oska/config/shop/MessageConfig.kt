@@ -1,8 +1,7 @@
-package me.oska.config
+package me.oska.config.shop
 
 import de.leonhard.storage.sections.FlatFileSection
 import me.clip.placeholderapi.PlaceholderAPI
-import me.oska.UniversalGUI
 import me.oska.manager.PluginManager
 import org.bukkit.entity.Player
 

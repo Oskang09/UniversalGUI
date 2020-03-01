@@ -43,9 +43,9 @@ object ModuleManager {
                     try {
                         module.isSupported()
                         modules[module.getIdentifier()] = module
-                        UniversalGUI.log("Registered new modules ${module.getName()} (${module.getVersion()}) by ${module.getAuthor()}")
+                        UniversalGUI.log("Registered new module ${module.getName()} (${module.getVersion()}) by ${module.getAuthor()}")
                     } catch (ex: ModuleNotSupported) {
-                        ex.printStackTrace()
+                        UniversalGUI.log("Fail to register module ${module.getName()} due to " + ex.message);
                     }
                 }
             }

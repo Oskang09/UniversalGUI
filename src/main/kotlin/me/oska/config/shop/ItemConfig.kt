@@ -1,6 +1,5 @@
-package me.oska.config
+package me.oska.config.shop
 
-import de.leonhard.storage.internal.FlatFile
 import de.leonhard.storage.sections.FlatFileSection
 import me.oska.module.ModuleType
 import org.bukkit.inventory.ItemStack

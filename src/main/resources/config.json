@@ -1,5 +1,4 @@
 {
-  // TODO: move use_parallel globally & api as config
   "use_parallel": true,
   "api": {
     "api-shop-1": {

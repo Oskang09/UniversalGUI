@@ -3,7 +3,7 @@ package me.oska.manager
 import de.leonhard.storage.Json
 import me.oska.UniversalGUI
 import me.oska.config.ApiConfig
-import me.oska.config.ShopConfig
+import me.oska.config.shop.ShopConfig
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -15,6 +15,43 @@ object ShopManager {
 
     fun initialize() {
         FileManager.loopFiles(UniversalGUI.getShopFolder(), ShopManager::registerShop);
+    }
+
+    private fun registerShop(file: File) {
+        val shop = ShopConfig(Json(file.nameWithoutExtension, file.parent));
+        shops.add(shop);
+    }
+
+    fun registerApiShop(key: String, config: ApiConfig) {
+        apiShop[key] = config;
+        config.update();
+    }
+
+    fun reloadApiShop(name: String): Boolean {
+        val shop = apiShop[name];
+        if (shop != null) {
+            shop.update();
+            return true;
+        }
+        return false;
+    }
+
+    fun reloadShop(id: String): Boolean {
+        val shop = shops.firstOrNull { shop -> shop.id == id }
+        if (shop != null) {
+            updateShop(shop);
+            return true;
+        }
+        return false;
+    }
+
+    fun updateShop(config: ShopConfig) {
+        val index = shops.indexOfFirst { shop -> shop.id == config.id };
+        if (index == -1) {
+            shops.add(config);
+        } else {
+            shops[index] = config;
+        }
     }
 
     fun displayShop(player: Player, npc: Int): Boolean {
@@ -42,19 +79,5 @@ object ShopManager {
             return true;
         }
         return false;
-    }
-
-    fun updateShop(config: ShopConfig) {
-        val index = shops.indexOfFirst { shop -> shop.api.name == config.api.name };
-        if (index == -1) {
-            shops.add(config);
-        } else {
-            shops[index] = config;
-        }
-    }
-
-    private fun registerShop(file: File) {
-        val shop = ShopConfig(Json(file.nameWithoutExtension, file.parent));
-        shops.add(shop);
     }
 }

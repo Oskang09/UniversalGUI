@@ -1,16 +1,15 @@
 package me.oska.manager
 
-import me.oska.config.ShopConfig
-import org.bukkit.entity.Player
+import me.oska.config.shop.ShopConfig
 import org.bukkit.inventory.Inventory
 
 object InventoryManager {
 
     data class PlayerState(
-        val page: Int,
-        val inventory: Inventory,
-        val currentShop: ShopConfig,
-        val thread: List<Thread>
+            val page: Int,
+            val inventory: Inventory,
+            val currentShop: ShopConfig,
+            val thread: List<Thread>
     );
 
     private var states: MutableMap<String, PlayerState> = mutableMapOf()

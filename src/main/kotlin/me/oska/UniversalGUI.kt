@@ -1,14 +1,8 @@
 package me.oska
 
-import de.leonhard.storage.LightningFile
-import me.oska.listener.CitizenListener
-import me.oska.listener.CommandListener
-import me.oska.listener.InventoryListener
-import me.oska.listener.ItemListener
-import me.oska.manager.ModuleManager
-import me.oska.manager.ShopManager
 import me.oska.module.Module
 import org.bukkit.Bukkit
+import org.bukkit.plugin.PluginLogger
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
@@ -22,11 +16,17 @@ class UniversalGUI: JavaPlugin() {
         private lateinit var modulePath: File;
         private lateinit var shopPath: File;
         private lateinit var apiPath: File;
+        private lateinit var configPath: File;
         private lateinit var manager: PluginManager;
         private lateinit var scheduler: BukkitScheduler;
+        private lateinit var console: Logger;
 
         fun getInstance(): UniversalGUI {
             return instance;
+        }
+
+        fun getConfigFile(): File {
+            return configPath;
         }
 
         fun getModuleFolder(): File {
@@ -50,19 +50,21 @@ class UniversalGUI: JavaPlugin() {
         }
 
         fun log(message: String, module: Module? = null) {
-            Bukkit.getLogger().info(
-                if (module != null) "[Module@${module.getName()}] $message" else message
+            console.info(
+                if (module != null) "#Module@${module.getName()} $message" else message
             );
         }
     }
 
     init {
         instance = this
-        modulePath = File(dataFolder, "modules");
+        modulePath = File(dataFolder, "");
         shopPath = File(dataFolder, "shops");
         apiPath = File(dataFolder, "_api");
+        configPath = File(dataFolder, "config.json");
         manager = server.pluginManager;
         scheduler = Bukkit.getScheduler();
+        console = logger;
     }
 
     override fun onEnable() {
@@ -77,6 +79,11 @@ class UniversalGUI: JavaPlugin() {
         if (!shopPath.exists()) {
             shopPath.mkdirs();
         }
+
+        if (!configPath.exists()) {
+            saveResource("config.json", false)
+        }
+
         me.oska.manager.PluginManager.onStart();
     }
 

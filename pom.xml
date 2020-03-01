@@ -40,6 +40,7 @@
         <spigot.scheduler>1.2.6</spigot.scheduler>
         <maven.compiler>3.5.1</maven.compiler>
         <maven.shade>3.0.0</maven.shade>
+        <maven.jp>3.2.0</maven.jp>
     </properties>
 
     <dependencies>
@@ -94,9 +95,11 @@
                 <filtering>false</filtering>
                 <includes>
                     <include>plugin.yml</include>
+                    <include>config.json</include>
                 </includes>
             </resource>
         </resources>
+
         <plugins>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -109,6 +112,7 @@
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>src/main/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/modules</sourceDir>
                             </sourceDirs>
                         </configuration>
                     </execution>
@@ -149,6 +153,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -159,9 +164,48 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/</exclude>
+                                        <exclude>modules/</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jp}</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>itemstack-module</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>Module</classifier>
+                            <includes>
+                                <include>modules/ItemstackModule.class</include>
+                            </includes>
+                            <finalName>Itemstack</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
