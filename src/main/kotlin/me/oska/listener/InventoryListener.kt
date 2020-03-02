@@ -12,7 +12,6 @@ class InventoryListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun close(event: InventoryCloseEvent) {
-        print("close");
         if (event.player !is Player) {
             return;
         }
@@ -26,7 +25,6 @@ class InventoryListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun click(event: InventoryClickEvent) {
-        print("click");
         if (event.whoClicked !is Player) {
             return;
         }

@@ -5,9 +5,12 @@ import de.leonhard.storage.sections.FlatFileSection
 import me.oska.config.ApiConfig
 import me.oska.manager.InventoryManager
 import me.oska.manager.PluginManager
+import me.oska.module.ModuleType
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
 import java.util.stream.Stream
 import kotlin.concurrent.thread
 import kotlin.math.ceil
@@ -62,8 +65,8 @@ class ShopConfig(file: FlatFile) {
                 show(page + 1, player)
             } else if (page > 1 && this.isPrev) {
                 show(page - 1, player)
-            } else if (getStream(this.modules).allMatch { module -> module.check(player) }) {
-                getStream(this.modules).forEach { module -> module.action(player) }
+            } else if (getStream(this.getModules()).allMatch { module -> module.check(player) }) {
+                getStream(this.getModules()).forEach { module -> module.action(player) };
             }
         }
     }
@@ -74,35 +77,49 @@ class ShopConfig(file: FlatFile) {
         val threads: MutableList<Thread> = mutableListOf()
         slots.forEach {
             (slot, config) -> run {
-                inv.setItem(slot, config.item)
-                threads.add(
-                    thread(start = true) {
-                        val item = inv.getItem(slot) ?: return@thread
-                        var meta = item.itemMeta
-                        if (meta != null) {
-                            var lore = meta.lore ?: mutableListOf()
-                            getStream(config.modules).forEach { module -> lore.add(module.display) }
-                            if (!config.message.requireCheck()) {
-                                lore.add(config.message.getMessage(player));
-                            } else if (!message.requireCheck()) {
-                                lore.add(message.getMessage(player));
-                            }
-                            meta.lore = lore
-                            item.itemMeta = meta
-                        }
-                        inv.setItem(slot, item)
-                    }
-                );
+                inv.setItem(slot, config.item);
 
-                when {
-                    config.message.requireCheck() -> {
-                        startCheckThread(config.message, config, inv, player, slot);
-                    }
-                    message.requireCheck() -> {
-                        startCheckThread(message, config, inv, player, slot);
-                    }
-                    else -> null
-                }?.also { thread -> threads.add(thread) }
+                if (!config.item.isSimilar(ItemStack(Material.AIR))) {
+                    threads.add(
+                        thread(start = true) {
+                            val item = inv.getItem(slot) ?: return@thread;
+                            var meta = item.itemMeta;
+                            if (meta != null) {
+                                val lore = meta.lore ?: mutableListOf()
+                                getStream(config.requirements).forEach { module -> lore.add(module.display) }
+                                getStream(config.rewards).forEach { module -> lore.add(module.display) }
+                                if (!config.message.requireCheck()) {
+                                    lore.add(config.message.getMessage(player));
+                                } else if (!message.requireCheck()) {
+                                    lore.add(message.getMessage(player));
+                                }
+                                meta.lore = lore;
+                                item.itemMeta = meta;
+                                inv.setItem(slot, item);
+
+                                val message: MessageConfig? = when {
+                                    config.message.requireCheck() -> config.message
+                                    message.requireCheck() -> message
+                                    else -> null
+                                }
+
+                                if (message != null) {
+                                    getStream(config.requirements).forEach { module ->
+                                        run {
+                                            when (module.check(player)) {
+                                                true -> lore.add(message.getFulFilled(player))
+                                                false -> lore.add(message.getRejected(player))
+                                            }
+                                        }
+                                    }
+                                    meta.lore = lore;
+                                    item.itemMeta = meta;
+                                    inv.setItem(slot, item);
+                                }
+                            }
+                        }
+                    );
+                }
             }
         }
         player.openInventory(inv)
@@ -112,27 +129,5 @@ class ShopConfig(file: FlatFile) {
 
     private fun <T, K> getStream(data: T): Stream<K> where T: List<K> {
         return if (PluginManager.pluginConfig.useParallel) data.parallelStream() else data.stream();
-    }
-
-    private fun startCheckThread(message: MessageConfig, config: ItemConfig, inv: Inventory, player: Player, slot: Int): Thread {
-        return thread(start = true) {
-            val item = inv.getItem(slot) ?: return@thread;
-            var meta = item.itemMeta
-            var lore = meta?.lore
-            if (lore == null) {
-                lore = mutableListOf()
-            }
-            getStream(config.modules).forEach { module ->
-                run {
-                    when (module.check(player)) {
-                        true -> lore.add(message.getFulFilled(player))
-                        false -> lore.add(message.getRejected(player))
-                    }
-                }
-            }
-            meta?.lore = lore
-            item.itemMeta = meta
-            inv.setItem(slot, item)
-        }
     }
 }

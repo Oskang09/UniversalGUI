@@ -1,8 +1,8 @@
 package me.oska
 
 import me.oska.module.Module
+import me.oska.module.ModuleInformation
 import org.bukkit.Bukkit
-import org.bukkit.plugin.PluginLogger
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitScheduler
@@ -49,10 +49,8 @@ class UniversalGUI: JavaPlugin() {
             return scheduler;
         }
 
-        fun log(message: String, module: Module? = null) {
-            console.info(
-                if (module != null) "#Module@${module.getName()} $message" else message
-            );
+        fun log(message: String) {
+            console.info(message);
         }
     }
 

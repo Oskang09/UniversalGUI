@@ -1,24 +1,15 @@
 package modules
 
 import me.oska.module.Module
+import me.oska.module.ModuleInformation
+import me.oska.module.ModuleNotConfigured
 import me.oska.module.ModuleType
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
-class ItemstackModule: Module() {
+object ItemstackModule: ModuleInformation() {
 
     override fun isSupported() {
-
-    }
-
-    override fun isConfigured(type: ModuleType, config: Map<String, Any>) {
-
-    }
-
-    override fun check(player: Player, type: ModuleType): Boolean {
-        return true;
-    }
-
-    override fun action(player: Player, type: ModuleType) {
 
     }
 
@@ -38,4 +29,34 @@ class ItemstackModule: Module() {
         return "item";
     }
 
+    override fun getModule(type: ModuleType, config: Map<*, *>): Module {
+        return ActionModule(type, config);
+    }
+
+    class ActionModule internal constructor(private val type: ModuleType, private val config: Map<*, *>): Module() {
+
+        private var itemStack: ItemStack;
+
+        init {
+            val itemMap = config["item"] ?: throw ModuleNotConfigured("Missing 'item' from configuration.");
+
+            @Suppress("UNCHECKED_CAST")
+            itemStack = ItemStack.deserialize(itemMap as MutableMap<String, Any>);
+        }
+
+        override fun check(player: Player): Boolean {
+            if (type == ModuleType.REWARD) {
+                return true;
+            }
+            return player.inventory.containsAtLeast(itemStack, itemStack.amount);
+        }
+
+        override fun action(player: Player) {
+            if (type == ModuleType.REWARD) {
+                player.inventory.addItem(itemStack);
+            } else {
+                player.inventory.removeItem(itemStack);
+            }
+        }
+    }
 }

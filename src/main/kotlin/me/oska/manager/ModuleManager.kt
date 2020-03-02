@@ -2,21 +2,23 @@ package me.oska.manager
 
 import me.oska.UniversalGUI
 import me.oska.module.Module
+import me.oska.module.ModuleInformation
 import me.oska.module.ModuleNotSupported
+import me.oska.module.ModuleType
 import java.io.File
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarFile
 
 object ModuleManager {
-    private var modules: MutableMap<String, Module> = mutableMapOf();
+    private var modules: MutableMap<String, ModuleInformation> = mutableMapOf();
 
     fun initialize() {
         FileManager.loopFiles(UniversalGUI.getModuleFolder(), ModuleManager::registerModule);
     }
 
-    fun getModule(name: String): Module? {
-        return modules[name];
+    fun getModule(name: String, type: ModuleType, setting: Map<*, *>): Module? {
+        return modules[name]?.getModule(type, setting);
     }
 
     private fun registerModule(file: File) {
@@ -37,9 +39,9 @@ object ModuleManager {
                 val classname = je.name.substring(0, je.name.length - 6).replace('/', '.')
                 val clazz = Class.forName(classname, true, loader)
                 if (Module::class.java.isAssignableFrom(clazz)) {
-                    val pl = clazz.asSubclass(Module::class.java)
-                    val cst = pl.getConstructor()
-                    val module = cst.newInstance()
+                    val pl = clazz.asSubclass(ModuleInformation::class.java)
+                    val cst = pl.getConstructor();
+                    val module = cst.newInstance();
                     try {
                         module.isSupported()
                         modules[module.getIdentifier()] = module
