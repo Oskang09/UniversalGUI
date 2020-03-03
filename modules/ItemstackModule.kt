@@ -1,5 +1,3 @@
-package modules
-
 import me.oska.module.Module
 import me.oska.module.ModuleInformation
 import me.oska.module.ModuleNotConfigured
@@ -7,7 +5,7 @@ import me.oska.module.ModuleType
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-object ItemstackModule: ModuleInformation() {
+class ItemstackModule : ModuleInformation() {
 
     override fun isSupported() {
 
@@ -33,7 +31,7 @@ object ItemstackModule: ModuleInformation() {
         return ActionModule(type, config);
     }
 
-    class ActionModule internal constructor(private val type: ModuleType, private val config: Map<*, *>): Module() {
+    internal class ActionModule constructor(private val type: ModuleType, config: Map<*, *>): Module() {
 
         private var itemStack: ItemStack;
 
@@ -48,14 +46,14 @@ object ItemstackModule: ModuleInformation() {
             if (type == ModuleType.REWARD) {
                 return true;
             }
-            return player.inventory.containsAtLeast(itemStack, itemStack.amount);
+            return player.inventory.containsAtLeast(itemStack.clone(), itemStack.amount);
         }
 
         override fun action(player: Player) {
             if (type == ModuleType.REWARD) {
-                player.inventory.addItem(itemStack);
+                player.inventory.addItem(itemStack.clone());
             } else {
-                player.inventory.removeItem(itemStack);
+                player.inventory.removeItem(itemStack.clone());
             }
         }
     }

@@ -15,7 +15,6 @@ class CommandListener: CommandExecutor {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, cmd: String, args: Array<String>): Boolean {
-
         if (sender is Player) {
             return ShopManager.displayShop(sender, args[0]);
         }

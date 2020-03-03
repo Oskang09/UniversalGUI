@@ -38,10 +38,10 @@ object ModuleManager {
                 }
                 val classname = je.name.substring(0, je.name.length - 6).replace('/', '.')
                 val clazz = Class.forName(classname, true, loader)
-                if (Module::class.java.isAssignableFrom(clazz)) {
+                if (ModuleInformation::class.java.isAssignableFrom(clazz)) {
                     val pl = clazz.asSubclass(ModuleInformation::class.java)
                     val cst = pl.getConstructor();
-                    val module = cst.newInstance();
+                    val module = cst.newInstance()
                     try {
                         module.isSupported()
                         modules[module.getIdentifier()] = module

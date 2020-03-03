@@ -31,12 +31,13 @@ class InventoryListener : Listener {
 
         val uuid: String = event.whoClicked.uniqueId.toString();
         if (InventoryManager.hasPlayer(uuid)) {
-            event.isCancelled = true;
-
             val state = InventoryManager.getPlayer(uuid);
-            if (event.clickedInventory == state.inventory) {
-                state.currentShop.action(state.page, event.slot, event.whoClicked as Player);
+            if (event.clickedInventory != state.inventory) {
+                return;
             }
+
+            event.isCancelled = true;
+            state.currentShop.action(state, event.slot, event.whoClicked as Player);
         }
     }
 }

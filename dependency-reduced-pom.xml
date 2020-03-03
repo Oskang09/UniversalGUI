@@ -110,7 +110,7 @@
             <configuration>
               <classifier>Module</classifier>
               <includes>
-                <include>modules/ItemstackModule.class</include>
+                <include>ItemstackModule.class</include>
               </includes>
               <finalName>Itemstack</finalName>
             </configuration>

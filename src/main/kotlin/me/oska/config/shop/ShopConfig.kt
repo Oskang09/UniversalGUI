@@ -59,14 +59,15 @@ class ShopConfig(file: FlatFile) {
         const val KEY_MESSAGE = "message"
     }
 
-    fun action(page: Int, slot: Int, player: Player) {
-        this.items[page * slot]?.apply {
+    fun action(state: InventoryManager.PlayerState, slot: Int, player: Player) {
+        this.items[state.page * slot]?.apply {
             if (this@ShopConfig.pageCount > 1 && this.isNext) {
-                show(page + 1, player)
-            } else if (page > 1 && this.isPrev) {
-                show(page - 1, player)
+                show(state.page + 1, player)
+            } else if (state.page  > 1 && this.isPrev) {
+                show(state.page  - 1, player)
             } else if (getStream(this.getModules()).allMatch { module -> module.check(player) }) {
                 getStream(this.getModules()).forEach { module -> module.action(player) };
+                getStream(state.thread).forEach { thread -> thread.run() };
             }
         }
     }
@@ -78,11 +79,10 @@ class ShopConfig(file: FlatFile) {
         slots.forEach {
             (slot, config) -> run {
                 inv.setItem(slot, config.item);
-
                 if (!config.item.isSimilar(ItemStack(Material.AIR))) {
                     threads.add(
                         thread(start = true) {
-                            val item = inv.getItem(slot) ?: return@thread;
+                            val item = config.item.clone();
                             var meta = item.itemMeta;
                             if (meta != null) {
                                 val lore = meta.lore ?: mutableListOf()
