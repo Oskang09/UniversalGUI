@@ -17,6 +17,10 @@ object ModuleManager {
         FileManager.loopFiles(UniversalGUI.getModuleFolder(), ModuleManager::registerModule);
     }
 
+    fun isSupportParellel(name: String): Boolean {
+        return modules[name]!!.supportParallel();
+    }
+
     fun getModule(name: String, type: ModuleType, setting: Map<*, *>): Module? {
         return modules[name]?.getModule(type, setting);
     }

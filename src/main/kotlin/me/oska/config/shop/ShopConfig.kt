@@ -66,7 +66,7 @@ class ShopConfig(file: FlatFile) {
             } else if (state.page  > 1 && this.isPrev) {
                 show(state.page  - 1, player)
             } else if (getStream(this.getModules()).allMatch { module -> module.check(player) }) {
-                getStream(this.getModules()).forEach { module -> module.action(player) };
+                getStream(this.getModules(), this.getModules().any { x -> !x.parallel }).forEach { module -> module.action(player) };
                 getStream(state.thread).forEach { thread -> thread.run() };
             }
         }
@@ -127,7 +127,10 @@ class ShopConfig(file: FlatFile) {
         InventoryManager.addPlayer(uuid, page, inv, this, threads)
     }
 
-    private fun <T, K> getStream(data: T): Stream<K> where T: List<K> {
+    private fun <T, K> getStream(data: T, notSupported: Boolean = false): Stream<K> where T: List<K> {
+        if (notSupported) {
+            return data.stream()
+        }
         return if (PluginManager.pluginConfig.useParallel) data.parallelStream() else data.stream();
     }
 }

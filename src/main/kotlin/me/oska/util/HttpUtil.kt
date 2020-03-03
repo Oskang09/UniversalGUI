@@ -1,4 +1,4 @@
-package util
+package me.oska.util
 
 import java.io.IOException
 import java.io.InputStream

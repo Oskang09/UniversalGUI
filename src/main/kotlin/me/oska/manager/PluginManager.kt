@@ -7,6 +7,7 @@ import me.oska.listener.CitizenListener
 import me.oska.listener.CommandListener
 import me.oska.listener.InventoryListener
 import me.oska.listener.ItemListener
+import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 
 object PluginManager {

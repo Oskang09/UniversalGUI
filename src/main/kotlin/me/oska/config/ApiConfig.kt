@@ -9,7 +9,7 @@ import de.leonhard.storage.sections.FlatFileSection
 import me.oska.UniversalGUI
 import me.oska.config.shop.ShopConfig
 import me.oska.manager.ShopManager
-import util.HttpUtil
+import me.oska.util.HttpUtil
 import java.io.InputStream
 
 class ApiConfig(config: FlatFileSection) {

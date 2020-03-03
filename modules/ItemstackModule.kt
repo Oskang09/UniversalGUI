@@ -27,6 +27,10 @@ class ItemstackModule : ModuleInformation() {
         return "item";
     }
 
+    override fun supportParallel(): Boolean {
+        return false;
+    }
+
     override fun getModule(type: ModuleType, config: Map<*, *>): Module {
         return ActionModule(type, config);
     }

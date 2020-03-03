@@ -8,6 +8,8 @@ import org.bukkit.entity.Player
 
 class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
+    var parallel: Boolean = false
+        private set;
     var module: Module? = null
         private set;
     var name: String
@@ -24,6 +26,7 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
         try {
             this.module = ModuleManager.getModule(this.name, type, setting) ?:
                     throw ModuleNotExists("Module \"${this.name}\" doesn't exists.");
+            this.parallel = ModuleManager.isSupportParellel(this.name);
         } catch (error: Throwable) {
             error.printStackTrace();
             this.module = null;
