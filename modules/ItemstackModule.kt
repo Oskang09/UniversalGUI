@@ -40,7 +40,7 @@ class ItemstackModule : ModuleInformation() {
         private var itemStack: ItemStack;
 
         init {
-            val itemMap = config["item"] ?: throw ModuleNotConfigured("Missing 'item' from configuration.");
+            val itemMap = config["item"] ?: throw ModuleNotConfigured("missing 'item' from configuration.");
 
             @Suppress("UNCHECKED_CAST")
             itemStack = ItemStack.deserialize(itemMap as MutableMap<String, Any>);

@@ -11,11 +11,11 @@ class VaultModule: ModuleInformation() {
     override fun isSupported() {
         val isVaultSupported = UniversalGUI.getPluginManager().getPlugin("Vault") != null;
         if (!isVaultSupported) {
-            throw ModuleNotSupported("Vault not found unable enable economy feature")
+            throw ModuleNotSupported("vault not found unable enable economy feature")
         }
 
         val registration = UniversalGUI.getInstance().server.servicesManager.getRegistration(Economy::class.java)
-                ?: throw ModuleNotSupported("Vault registration not found unable enable economy feature")
+                ?: throw ModuleNotSupported("vault registration not found unable enable economy feature")
         economy = registration!!.provider
     }
 
@@ -48,12 +48,12 @@ class VaultModule: ModuleInformation() {
         private var money: Double;
 
         init {
-            val money = config["money"] ?: throw ModuleNotConfigured("Missing 'money' from configuration.")
+            val money = config["money"] ?: throw ModuleNotConfigured("missing 'money' from configuration")
 
             try {
                 this.money = money as Double
             } catch (ex: Throwable) {
-                throw ModuleNotConfigured("Money is not a double, received $money")
+                throw ModuleNotConfigured("money is not a decimal value, received $money")
             }
         }
 
