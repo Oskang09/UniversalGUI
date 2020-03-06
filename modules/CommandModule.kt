@@ -1,10 +1,8 @@
 import me.clip.placeholderapi.PlaceholderAPI
 import me.oska.UniversalGUI
-import me.oska.manager.PluginManager
 import me.oska.module.*
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.bukkit.event.player.PlayerMoveEvent
 
 class CommandModule: ModuleInformation() {
 
