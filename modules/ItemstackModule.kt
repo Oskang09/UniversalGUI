@@ -32,25 +32,24 @@ class ItemstackModule : ModuleInformation() {
     }
 
     override fun getModule(type: ModuleType, config: Map<*, *>): Module {
-        return ActionModule(type, config);
+        val configItem = config["item"] ?: throw ModuleNotConfigured("missing 'item' from configuration.");
+
+        @Suppress("UNCHECKED_CAST")
+        val serializedMap = configItem as? MutableMap<String, Any> ?: throw ModuleNotConfigured("item is not a serialized item map, received $configItem")
+        val itemstack: ItemStack = ItemStack.deserialize(serializedMap);
+        return ActionModule(type, itemstack);
     }
 
-    internal class ActionModule constructor(private val type: ModuleType, config: Map<*, *>): Module() {
-
-        private var itemStack: ItemStack;
-
-        init {
-            val itemMap = config["item"] ?: throw ModuleNotConfigured("missing 'item' from configuration.");
-
-            @Suppress("UNCHECKED_CAST")
-            itemStack = ItemStack.deserialize(itemMap as MutableMap<String, Any>);
-        }
+    internal class ActionModule constructor(
+        private val type: ModuleType,
+        private val itemStack: ItemStack
+    ): Module() {
 
         override fun check(player: Player): Boolean {
-            if (type == ModuleType.REWARD) {
-                return true;
+            if (type == ModuleType.REQUIREMENT) {
+                return player.inventory.containsAtLeast(itemStack.clone(), itemStack.amount);
             }
-            return player.inventory.containsAtLeast(itemStack.clone(), itemStack.amount);
+            return player.inventory.firstEmpty() == -1;
         }
 
         override fun action(player: Player) {

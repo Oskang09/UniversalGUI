@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack
 
 class VaultModule: ModuleInformation() {
 
-    private var economy: Economy? = null;
+    private lateinit var economy: Economy;
 
     override fun isSupported() {
         val isVaultSupported = UniversalGUI.getPluginManager().getPlugin("Vault") != null;
@@ -16,7 +16,7 @@ class VaultModule: ModuleInformation() {
 
         val registration = UniversalGUI.getInstance().server.servicesManager.getRegistration(Economy::class.java)
                 ?: throw ModuleNotSupported("vault registration not found unable enable economy feature")
-        economy = registration!!.provider
+        economy = registration.provider
     }
 
     override fun getAuthor(): String {
@@ -40,35 +40,29 @@ class VaultModule: ModuleInformation() {
     }
 
     override fun getModule(type: ModuleType, config: Map<*, *>): Module {
-        return ActionModule(economy!!, type, config);
+        val configMoney = config["money"] ?: throw ModuleNotConfigured("missing 'money' from configuration")
+        var money = configMoney as? Double ?: throw ModuleNotConfigured("money is not a decimal value, received $configMoney")
+        return ActionModule(economy, type, money);
     }
 
-    internal class ActionModule constructor(private val economy: Economy, private val type: ModuleType, config: Map<*, *>): Module() {
-
-        private var money: Double;
-
-        init {
-            val money = config["money"] ?: throw ModuleNotConfigured("missing 'money' from configuration")
-
-            try {
-                this.money = money as Double
-            } catch (ex: Throwable) {
-                throw ModuleNotConfigured("money is not a decimal value, received $money")
-            }
-        }
+    internal class ActionModule constructor(
+        private val economy: Economy,
+        private val type: ModuleType,
+        private val money: Double
+    ): Module() {
 
         override fun check(player: Player): Boolean {
             if (type == ModuleType.REWARD) {
                 return true;
             }
-            return economy.hasAccount(player) && economy.has(player, this.money);
+            return economy.hasAccount(player) && economy.has(player, money);
         }
 
         override fun action(player: Player) {
             if (type == ModuleType.REWARD) {
-                economy.depositPlayer(player, this.money)
+                economy.depositPlayer(player, money)
             } else {
-                economy.withdrawPlayer(player, this.money)
+                economy.withdrawPlayer(player, money)
             }
         }
     }

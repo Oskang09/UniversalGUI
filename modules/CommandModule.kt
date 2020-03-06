@@ -1,13 +1,17 @@
-import me.oska.module.Module
-import me.oska.module.ModuleInformation
-import me.oska.module.ModuleNotSupported
-import me.oska.module.ModuleType
+import me.clip.placeholderapi.PlaceholderAPI
+import me.oska.UniversalGUI
+import me.oska.manager.PluginManager
+import me.oska.module.*
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerMoveEvent
 
 class CommandModule: ModuleInformation() {
 
-    override fun isSupported() {
+    private var isPlaceholderSupported: Boolean = false;
 
+    override fun isSupported() {
+        isPlaceholderSupported = UniversalGUI.getPluginManager().getPlugin("PlaceholderAPI") != null
     }
 
     override fun getAuthor(): String {
@@ -34,16 +38,41 @@ class CommandModule: ModuleInformation() {
         if (type == ModuleType.REQUIREMENT) {
             throw ModuleNotSupported("command module doesn't support requirement option");
         }
-        return ActionModule(type, config)
+
+        val commands = config["commands"] ?: throw ModuleNotConfigured("missing 'commands' from configuration.");
+        val executeBy = config["executeBy"] ?: "SERVER"
+
+        @Suppress("UNCHECKED_CAST")
+        val cmd: List<String> = commands as? List<String> ?: throw ModuleNotConfigured("commands is not a string list, received $commands")
+        val exec: String = executeBy as? String ?: throw ModuleNotConfigured("executeBy is not a string, received $executeBy")
+        return ActionModule(exec, cmd, isPlaceholderSupported);
     }
 
-    internal class ActionModule constructor(private val type: ModuleType, config: Map<*, *>): Module() {
+    internal class ActionModule constructor(
+        private val executeBy: String,
+        private val commands: List<String>,
+        private val isPlaceholderSupported: Boolean
+    ): Module() {
+
+        private fun getCommands(player: Player): List<String> {
+            if (isPlaceholderSupported) {
+                return PlaceholderAPI.setPlaceholders(player, commands)
+            }
+            return commands.map {
+                command -> command.
+                    replace("%player_name%", player.name).
+                    replace("%player_uuid%", player.uniqueId.toString()).
+                    replace("%player_level%", player.level.toString())
+            }
+        }
+
         override fun check(player: Player): Boolean {
             return true;
         }
 
-        override fun action(player: Player) {
-
-        }
+        override fun action(player: Player) = if (executeBy == "SERVER")
+            getCommands(player).forEach {command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command)}
+        else
+            getCommands(player).forEach {command -> player.performCommand(command)}
     }
 }

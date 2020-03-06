@@ -34,11 +34,13 @@
     <properties>
         <kotlin.version>1.3.61</kotlin.version>
         <kotlin.skedule>1.2.6</kotlin.skedule>
+
         <spigot.core>1.15.1-R0.1-SNAPSHOT</spigot.core>
         <spigot.citizens>2.0.26-SNAPSHOT</spigot.citizens>
         <spigot.lightningStorange>3.0.7</spigot.lightningStorange>
         <spigot.papi>2.10.4</spigot.papi>
         <spigot.vault>1.7</spigot.vault>
+
         <maven.compiler>3.5.1</maven.compiler>
         <maven.shade>3.0.0</maven.shade>
         <maven.jp>3.2.0</maven.jp>
@@ -46,26 +48,33 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.core}</version>
-            <scope>provided</scope>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.JavaFactoryDev</groupId>
             <artifactId>LightningStorage</artifactId>
             <version>${spigot.lightningStorange}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.okkero.skedule</groupId>
+            <artifactId>skedule</artifactId>
+            <version>${kotlin.skedule}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.core}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -86,10 +95,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.okkero.skedule</groupId>
-            <artifactId>skedule</artifactId>
-            <version>${kotlin.skedule}</version>
-            <scope>compile</scope>
+            <groupId>com.shampaggon.crackshot</groupId>
+            <artifactId>CSDirector</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/plugins/CrackShot-0988.jar</systemPath>
         </dependency>
     </dependencies>
 

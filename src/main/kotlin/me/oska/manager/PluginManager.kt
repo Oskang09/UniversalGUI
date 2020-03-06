@@ -1,5 +1,6 @@
 package me.oska.manager
 
+import com.shampaggon.crackshot.CSUtility
 import de.leonhard.storage.Json
 import me.oska.UniversalGUI
 import me.oska.config.PluginConfig
