@@ -8,8 +8,7 @@ object InventoryManager {
     data class PlayerState(
             val page: Int,
             val inventory: Inventory,
-            val currentShop: ShopConfig,
-            val thread: List<Thread>
+            val currentShop: ShopConfig
     );
 
     private var states: MutableMap<String, PlayerState> = mutableMapOf()
@@ -30,7 +29,7 @@ object InventoryManager {
         return states.containsKey(uuid);
     }
 
-    fun addPlayer(uuid: String, page: Int, inventory: Inventory, shop: ShopConfig, threads: List<Thread>) {
-        states[uuid] = PlayerState(page, inventory, shop, threads);
+    fun addPlayer(uuid: String, page: Int, inventory: Inventory, shop: ShopConfig) {
+        states[uuid] = PlayerState(page, inventory, shop);
     }
 }

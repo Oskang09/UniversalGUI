@@ -276,17 +276,17 @@
     </dependency>
   </dependencies>
   <properties>
-    <kotlin.skedule>1.2.6</kotlin.skedule>
-    <spigot.papi>2.10.4</spigot.papi>
-    <maven.jp>3.2.0</maven.jp>
     <spigot.lightningStorange>3.0.7</spigot.lightningStorange>
     <spigot.vault>1.7</spigot.vault>
-    <spigot.citizens>2.0.26-SNAPSHOT</spigot.citizens>
-    <maven.shade>3.0.0</maven.shade>
+    <spigot.papi>2.10.4</spigot.papi>
+    <maven.jp>3.2.0</maven.jp>
     <kotlin.version>1.3.61</kotlin.version>
-    <maven.compiler>3.5.1</maven.compiler>
+    <kotlin.skedule>1.2.6</kotlin.skedule>
     <spigot.crackshot>0.98.8</spigot.crackshot>
     <spigot.core>1.15.1-R0.1-SNAPSHOT</spigot.core>
+    <spigot.citizens>2.0.26-SNAPSHOT</spigot.citizens>
+    <maven.compiler>3.5.1</maven.compiler>
+    <maven.shade>3.0.0</maven.shade>
   </properties>
 </project>
 

@@ -2,12 +2,11 @@ package me.oska.config.shop
 
 import de.leonhard.storage.sections.FlatFileSection
 import me.oska.module.ModuleType
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
+import me.oska.util.ItemMap
 
 class ItemConfig(config: FlatFileSection) {
 
-    var item: ItemStack = ItemStack(Material.AIR)
+    lateinit var item: ItemMap
         private set;
     var isPrev: Boolean
         private set;
@@ -17,17 +16,13 @@ class ItemConfig(config: FlatFileSection) {
         private set;
     var rewards: MutableList<ModuleConfig> = mutableListOf()
         private set;
-    var message: MessageConfig
-        private set;
 
     init {
         this.isPrev = config.getBoolean(KEY_NEXT);
         this.isNext = config.getBoolean(KEY_PREV);
-        this.message = MessageConfig(config);
         val itemMap = config.getMap(KEY_ITEM);
-        if (itemMap != null && itemMap is MutableMap<*, *>) {
-            @Suppress("UNCHECKED_CAST")
-            this.item = ItemStack.deserialize(itemMap as MutableMap<String, Any>);
+        if (itemMap != null) {
+            item = ItemMap(itemMap);
         }
 
         @Suppress("UNCHECKED_CAST")

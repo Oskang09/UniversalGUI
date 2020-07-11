@@ -18,8 +18,7 @@ class InventoryListener : Listener {
 
         val uuid: String = event.player.uniqueId.toString();
         if (InventoryManager.hasPlayer(uuid)) {
-            val state = InventoryManager.removePlayer(uuid);
-            state.thread.parallelStream().filter { thread -> thread.isAlive }.forEach { thread -> thread.interrupt() }
+            InventoryManager.removePlayer(uuid);
         }
     }
 

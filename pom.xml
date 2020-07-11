@@ -18,7 +18,7 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>spigot-citizens</id>
+            <id>spigot-citizens/id>
             <url>http://repo.citizensnpcs.co/</url>
         </repository>
         <repository>

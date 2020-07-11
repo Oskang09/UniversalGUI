@@ -14,15 +14,12 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
         private set;
     var name: String
         private set;
-    var display: String
-        private set;
     var error: Throwable? = null
         private set;
 
 
     init {
         this.name = setting[KEY_MODULE] as String
-        this.display = setting[KEY_DISPLAY] as String
         try {
             this.module = ModuleManager.getModule(this.name, type, setting) ?:
                     throw ModuleNotExists("Module \"${this.name}\" doesn't exists.");
@@ -36,7 +33,6 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
     companion object {
         const val KEY_MODULE = "module";
-        const val KEY_DISPLAY = "display";
     }
 
     fun check(player: Player): Boolean {

@@ -1,7 +1,9 @@
+import me.oska.UniversalGUI
 import me.oska.module.Module
 import me.oska.module.ModuleInformation
 import me.oska.module.ModuleNotConfigured
 import me.oska.module.ModuleType
+import me.oska.util.ItemMap
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -36,7 +38,7 @@ class ItemstackModule : ModuleInformation() {
 
         @Suppress("UNCHECKED_CAST")
         val serializedMap = configItem as? MutableMap<String, Any> ?: throw ModuleNotConfigured("item is not a serialized item map, received $configItem")
-        val itemstack: ItemStack = ItemStack.deserialize(serializedMap);
+        val itemstack = ItemMap(serializedMap).item;
         return ActionModule(type, itemstack);
     }
 
@@ -49,7 +51,7 @@ class ItemstackModule : ModuleInformation() {
             if (type == ModuleType.REQUIREMENT) {
                 return player.inventory.containsAtLeast(itemStack.clone(), itemStack.amount);
             }
-            return player.inventory.firstEmpty() == -1;
+            return player.inventory.firstEmpty() != -1;
         }
 
         override fun action(player: Player) {
