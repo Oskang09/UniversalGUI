@@ -1,7 +1,5 @@
 package me.oska
 
-import me.oska.module.Module
-import me.oska.module.ModuleInformation
 import org.bukkit.Bukkit
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin

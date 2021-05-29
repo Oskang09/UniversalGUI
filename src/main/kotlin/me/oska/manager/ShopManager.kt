@@ -14,7 +14,9 @@ object ShopManager {
     private var apiShop: MutableMap<String, ApiConfig> = mutableMapOf();
 
     fun initialize() {
-        FileManager.loopFiles(UniversalGUI.getShopFolder(), ShopManager::registerShop);
+        FileManager.loopFiles(UniversalGUI.getShopFolder()) {
+            registerShop(it)
+        }
     }
 
     private fun registerShop(file: File) {

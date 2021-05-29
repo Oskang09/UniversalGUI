@@ -14,7 +14,9 @@ object ModuleManager {
     private var modules: MutableMap<String, ModuleInformation> = mutableMapOf();
 
     fun initialize() {
-        FileManager.loopFiles(UniversalGUI.getModuleFolder(), ModuleManager::registerModule);
+        FileManager.loopFiles(UniversalGUI.getModuleFolder()) {
+            registerModule(it)
+        }
     }
 
     fun isSupportParallel(name: String): Boolean {
@@ -25,7 +27,7 @@ object ModuleManager {
         return modules[name]?.getModule(type, setting);
     }
 
-    fun registerModule(module: ModuleInformation) {
+    fun registerPluginModule(module: ModuleInformation) {
         try {
             module.isSupported()
             modules[module.getIdentifier()] = module
@@ -56,13 +58,7 @@ object ModuleManager {
                     val pl = clazz.asSubclass(ModuleInformation::class.java)
                     val cst = pl.getConstructor();
                     val module = cst.newInstance()
-                    try {
-                        module.isSupported()
-                        modules[module.getIdentifier()] = module
-                        UniversalGUI.log("Registered new module ${module.getName()} (${module.getVersion()}) by ${module.getAuthor()}")
-                    } catch (ex: ModuleNotSupported) {
-                        UniversalGUI.log("Fail to register module ${module.getName()} due to " + ex.message);
-                    }
+                    registerPluginModule(module)
                 }
             }
             loader.close()
