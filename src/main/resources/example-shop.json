@@ -22,13 +22,8 @@
   },
   "items": {
     "1": {
-      "message": {
-        "const": "You have %money%",
-        "fulfilled": "You have enough money",
-        "rejected": "You have not enough money."
-      },
       "item": {
-        "type": "AIR",
+        "material": "AIR",
         "name": "123",
         "data": 1,
         "amount": 11,

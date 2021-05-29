@@ -2,5 +2,6 @@ package me.oska.module
 
 enum class ModuleType {
     REQUIREMENT,
-    REWARD
+    REWARD,
+    ITEM_PROVIDER
 }

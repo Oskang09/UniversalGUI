@@ -4,7 +4,9 @@ import me.oska.manager.ModuleManager
 import me.oska.module.Module
 import me.oska.module.ModuleNotExists
 import me.oska.module.ModuleType
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
@@ -23,7 +25,7 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
         try {
             this.module = ModuleManager.getModule(this.name, type, setting) ?:
                     throw ModuleNotExists("Module \"${this.name}\" doesn't exists.");
-            this.parallel = ModuleManager.isSupportParellel(this.name);
+            this.parallel = ModuleManager.isSupportParallel(this.name);
         } catch (error: Throwable) {
             error.printStackTrace();
             this.module = null;
@@ -33,6 +35,18 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
     companion object {
         const val KEY_MODULE = "module";
+    }
+
+    fun get(config: Map<*, *>): ItemStack {
+        if (this.module != null) {
+            return this.module!!.get(config)
+        }
+
+        if (this.error != null) {
+            this.error!!.printStackTrace()
+        }
+
+        return ItemStack(Material.AIR);
     }
 
     fun check(player: Player): Boolean {

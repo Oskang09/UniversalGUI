@@ -17,12 +17,22 @@ object ModuleManager {
         FileManager.loopFiles(UniversalGUI.getModuleFolder(), ModuleManager::registerModule);
     }
 
-    fun isSupportParellel(name: String): Boolean {
+    fun isSupportParallel(name: String): Boolean {
         return modules[name]!!.supportParallel();
     }
 
     fun getModule(name: String, type: ModuleType, setting: Map<*, *>): Module? {
         return modules[name]?.getModule(type, setting);
+    }
+
+    fun registerModule(module: ModuleInformation) {
+        try {
+            module.isSupported()
+            modules[module.getIdentifier()] = module
+            UniversalGUI.log("Registered new module ${module.getName()} (${module.getVersion()}) by ${module.getAuthor()}")
+        } catch (ex: ModuleNotSupported) {
+            UniversalGUI.log("Fail to register module ${module.getName()} due to " + ex.message);
+        }
     }
 
     private fun registerModule(file: File) {

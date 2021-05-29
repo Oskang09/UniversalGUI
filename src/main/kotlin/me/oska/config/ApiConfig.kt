@@ -1,7 +1,5 @@
 package me.oska.config
 
-import com.okkero.skedule.CoroutineTask
-import com.okkero.skedule.schedule
 import de.leonhard.storage.Json
 import de.leonhard.storage.Toml
 import de.leonhard.storage.Yaml
@@ -18,7 +16,6 @@ class ApiConfig(config: FlatFileSection) {
     private var endpoint: String = config.getString(KEY_ENDPOINT);
     private var format: String = config.getString(KEY_FORMAT);
     private var headers: Map<String, String>? = null;
-    private var task: CoroutineTask? = null;
     private var update: Int = config.getInt(KEY_UPDATE);
     var name: String = config.getString(KEY_NAME)
 
@@ -40,10 +37,9 @@ class ApiConfig(config: FlatFileSection) {
         }
 
         if (update > 0) {
-            task = UniversalGUI.getScheduler().schedule(UniversalGUI.getInstance()) {
-                repeating(update.toLong());
-                update();
-            }
+            UniversalGUI.getScheduler().scheduleSyncRepeatingTask(UniversalGUI.getInstance(), {
+              update()
+            }, 0, update.toLong())
         }
     }
 
@@ -52,6 +48,7 @@ class ApiConfig(config: FlatFileSection) {
         if (headers != null) {
             http.setHeader(headers!!);
         }
+
         val stream: InputStream = http.get();
         val shop = when (format) {
             "json" -> ShopConfig(Json(name, UniversalGUI.getApiPath().path, stream))
@@ -59,6 +56,7 @@ class ApiConfig(config: FlatFileSection) {
             "toml" -> ShopConfig(Toml(name, UniversalGUI.getApiPath().path, stream))
             else -> null
         }
+
         if (shop != null) {
             ShopManager.updateShop(shop);
         }

@@ -31,7 +31,7 @@ class CrackshotModule: ModuleInformation() {
     }
 
     override fun supportParallel(): Boolean {
-        return true;
+        return false;
     }
 
     override fun getModule(type: ModuleType, config: Map<*, *>): Module {

@@ -2,6 +2,8 @@ package me.oska.config.shop
 
 import de.leonhard.storage.internal.FlatFile
 import de.leonhard.storage.sections.FlatFileSection
+import me.clip.placeholderapi.PlaceholderAPI
+import me.oska.UniversalGUI
 import me.oska.manager.InventoryManager
 import me.oska.manager.PluginManager
 import org.bukkit.Bukkit
@@ -12,8 +14,8 @@ import kotlin.math.ceil
 
 class ShopConfig(file: FlatFile) {
 
-    var id: String;
-    private var title: String
+    var id: String = file.getString(KEY_ID);
+    private var title: String = file.getString(KEY_TITLE)
     private var row: Int = 0
     private var pageCount: Int = 1
     private var slotPerPage: Int = 0
@@ -21,8 +23,6 @@ class ShopConfig(file: FlatFile) {
     var activator: ActivatorConfig
 
     init {
-        this.id = file.getString(KEY_ID);
-        this.title = file.getString(KEY_TITLE)
         this.row = file.getInt(KEY_ROW)
         this.slotPerPage = this.row * 9
         this.activator = ActivatorConfig(file.getSection(KEY_ACTIVATOR))
@@ -66,11 +66,16 @@ class ShopConfig(file: FlatFile) {
     fun show(page: Int, player: Player) {
         val slots: Map<Int, ItemConfig> = this.items.filterKeys { index -> index > page - 1 * 64 && index < page * 64 }
         val inv: Inventory = Bukkit.createInventory(player, this.slotPerPage, this.title)
+
         slots.forEach {
             (slot, config) -> run {
-                inv.setItem(slot, config.item.item);
+                if (PluginManager.isPlaceholderSupported) {
+                    config.item.item.itemMeta?.lore =  PlaceholderAPI.setPlaceholders(player, config.item.item.itemMeta?.lore)
+                }
+                inv.setItem(slot, config.item.item)
             }
         }
+
         player.openInventory(inv)
         val uuid: String = player.uniqueId.toString()
         InventoryManager.addPlayer(uuid, page, inv, this)
