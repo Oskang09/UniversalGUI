@@ -34,6 +34,7 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8", kotlinVersion))
+    testImplementation(kotlin("test"))
 
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
