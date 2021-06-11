@@ -1,6 +1,5 @@
 package me.oska.manager
 
-import com.shampaggon.crackshot.CSUtility
 import de.leonhard.storage.Json
 import me.oska.UniversalGUI
 import me.oska.config.PluginConfig
@@ -8,7 +7,6 @@ import me.oska.listener.CitizenListener
 import me.oska.listener.CommandListener
 import me.oska.listener.InventoryListener
 import me.oska.listener.ItemListener
-import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 
 object PluginManager {

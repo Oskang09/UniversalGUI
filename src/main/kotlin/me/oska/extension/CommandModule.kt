@@ -1,3 +1,5 @@
+package me.oska.extension
+
 import me.clip.placeholderapi.PlaceholderAPI
 import me.oska.UniversalGUI
 import me.oska.module.*

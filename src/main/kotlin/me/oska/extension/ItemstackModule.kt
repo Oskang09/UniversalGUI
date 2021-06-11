@@ -1,4 +1,5 @@
-import me.oska.UniversalGUI
+package me.oska.extension
+
 import me.oska.module.Module
 import me.oska.module.ModuleInformation
 import me.oska.module.ModuleNotConfigured

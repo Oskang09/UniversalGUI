@@ -9,6 +9,7 @@ import me.oska.manager.PluginManager
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.meta.ItemMeta
 import java.util.stream.Stream
 import kotlin.math.ceil
 
@@ -70,7 +71,12 @@ class ShopConfig(file: FlatFile) {
         slots.forEach {
             (slot, config) -> run {
                 if (PluginManager.isPlaceholderSupported) {
-                    config.item.item.itemMeta?.lore =  PlaceholderAPI.setPlaceholders(player, config.item.item.itemMeta?.lore)
+                    val item = config.item.item
+                    if (item.itemMeta != null) {
+                        var lores = item.itemMeta?.lore ?: mutableListOf()
+                        lores =  PlaceholderAPI.setPlaceholders(player, lores)
+                        item.itemMeta?.lore = lores
+                    }
                 }
                 inv.setItem(slot, config.item.item)
             }

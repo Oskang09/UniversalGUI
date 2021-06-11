@@ -1,5 +1,7 @@
 package me.oska
 
+import me.oska.manager.ModuleManager
+import me.oska.module.ModuleInformation
 import org.bukkit.Bukkit
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
@@ -61,6 +63,10 @@ class UniversalGUI: JavaPlugin() {
         manager = server.pluginManager;
         scheduler = Bukkit.getScheduler();
         console = logger;
+    }
+
+    fun registerModule(module: ModuleInformation) {
+        ModuleManager.registerPluginModule(module)
     }
 
     override fun onEnable() {

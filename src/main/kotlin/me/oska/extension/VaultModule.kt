@@ -1,8 +1,9 @@
+package me.oska.extension
+
 import me.oska.UniversalGUI
 import me.oska.module.*
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class VaultModule: ModuleInformation() {
 

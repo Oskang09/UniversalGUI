@@ -1,6 +1,9 @@
 package me.oska.manager
 
 import me.oska.UniversalGUI
+import me.oska.extension.CommandModule
+import me.oska.extension.ItemstackModule
+import me.oska.extension.VaultModule
 import me.oska.module.Module
 import me.oska.module.ModuleInformation
 import me.oska.module.ModuleNotSupported
@@ -17,6 +20,10 @@ object ModuleManager {
         FileManager.loopFiles(UniversalGUI.getModuleFolder()) {
             registerModule(it)
         }
+
+        registerPluginModule(VaultModule())
+        registerPluginModule(ItemstackModule())
+        registerPluginModule(CommandModule())
     }
 
     fun isSupportParallel(name: String): Boolean {
