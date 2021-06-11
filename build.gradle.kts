@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URI
 
-group = "com.ec"
+group = "me.oska"
 version = "3.0.1"
 
 val kotlinVersion = "1.5.10"
@@ -48,7 +48,7 @@ val sourcesJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
     from(sourceSets.main.get().allSource)
     manifest {
-        attributes(mapOf("Main-Class" to "$group/ECCore"))
+        attributes(mapOf("Main-Class" to "$group/UniversalGUI"))
     }
 }
 
@@ -64,6 +64,10 @@ val deployPlugin by tasks.registering(Copy::class) {
         from(shadowJar)
         into(it)
     }
+}
+
+val test = (tasks["test"] as Task).apply {
+
 }
 
 val build = (tasks["build"] as Task).apply {
