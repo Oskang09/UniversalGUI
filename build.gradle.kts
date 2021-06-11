@@ -24,6 +24,7 @@ tasks.withType<KotlinCompile> {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url = URI.create("https://hub.spigotmc.org/nexus/content/repositories/snapshots") }
     maven { url = URI.create("https://jitpack.io") }
