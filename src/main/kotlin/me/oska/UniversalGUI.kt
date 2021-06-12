@@ -14,7 +14,6 @@ class UniversalGUI: JavaPlugin() {
 
     companion object {
         private lateinit var instance: UniversalGUI;
-        private lateinit var modulePath: File;
         private lateinit var shopPath: File;
         private lateinit var apiPath: File;
         private lateinit var configPath: File;
@@ -28,10 +27,6 @@ class UniversalGUI: JavaPlugin() {
 
         fun getConfigFile(): File {
             return configPath;
-        }
-
-        fun getModuleFolder(): File {
-            return modulePath;
         }
 
         fun getShopFolder(): File {
@@ -55,17 +50,6 @@ class UniversalGUI: JavaPlugin() {
         }
     }
 
-    init {
-        instance = this
-        modulePath = File(dataFolder, "");
-        shopPath = File(dataFolder, "shops");
-        apiPath = File(dataFolder, "_api");
-        configPath = File(dataFolder, "config.json");
-        manager = server.pluginManager;
-        scheduler = Bukkit.getScheduler();
-        console = logger;
-    }
-
     fun registerProvider(module: ItemProvider) {
         ModuleManager.registerItemProvider(module)
     }
@@ -74,13 +58,19 @@ class UniversalGUI: JavaPlugin() {
         ModuleManager.registerPluginModule(module)
     }
 
+    init {
+        instance = this
+        shopPath = File(dataFolder, "shops");
+        apiPath = File(dataFolder, "_api");
+        configPath = File(dataFolder, "config.json");
+        manager = server.pluginManager;
+        scheduler = Bukkit.getScheduler();
+        console = logger;
+    }
+
     override fun onEnable() {
         if (!apiPath.exists()) {
             apiPath.mkdirs();
-        }
-
-        if(!modulePath.exists()) {
-            modulePath.mkdirs();
         }
 
         if (!shopPath.exists()) {
