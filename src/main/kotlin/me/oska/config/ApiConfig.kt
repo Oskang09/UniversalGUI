@@ -13,7 +13,7 @@ import java.io.InputStream
 class ApiConfig(config: FlatFileSection) {
 
     private var method: String = config.getString(KEY_METHOD);
-    private var endpoint: String = config.getString(KEY_ENDPOINT);
+    var endpoint: String = config.getString(KEY_ENDPOINT);
     private var format: String = config.getString(KEY_FORMAT);
     private var headers: Map<String, String>? = null;
     private var update: Int = config.getInt(KEY_UPDATE);

@@ -29,7 +29,13 @@ internal object ModuleManager {
     }
 
     fun registerItemProvider(provider: ItemProvider) {
-        providers[provider.key()] = provider
+        try {
+            provider.isSupported()
+            providers[provider.key()] = provider
+            UniversalGUI.log("Registered new module ${provider.getName()} (${provider.getVersion()}) by ${provider.getAuthor()}")
+        } catch (ex: ModuleNotSupported) {
+            UniversalGUI.log("Fail to register module ${provider.getName()} due to " + ex.message);
+        }
     }
 
     fun registerPluginModule(module: ModuleInformation) {

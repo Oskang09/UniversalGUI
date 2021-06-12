@@ -19,6 +19,13 @@ object ShopManager {
         }
     }
 
+    fun shopListMessages(): List<String> {
+        return listOf(
+            *shops.map { "§f[§5LOCAL§f] §f" + it.id }.toTypedArray(),
+            *apiShop.map { "§f[§5API§f] §f" + it.key + " - " + it.value.endpoint }.toTypedArray()
+        )
+    }
+
     private fun registerShop(file: File) {
         val shop = ShopConfig(Json(file.nameWithoutExtension, file.parent));
         shops.add(shop);
