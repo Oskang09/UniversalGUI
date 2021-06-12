@@ -37,18 +37,6 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
         const val KEY_MODULE = "module";
     }
 
-    fun get(config: Map<*, *>): ItemStack {
-        if (this.module != null) {
-            return this.module!!.get(config)
-        }
-
-        if (this.error != null) {
-            this.error!!.printStackTrace()
-        }
-
-        return ItemStack(Material.AIR);
-    }
-
     fun check(player: Player): Boolean {
         if (this.module != null) {
             return this.module!!.check(player);

@@ -1,7 +1,6 @@
 package me.oska.util
 
-import me.oska.config.shop.ModuleConfig
-import me.oska.module.ModuleType
+import me.oska.manager.ModuleManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -20,7 +19,7 @@ class ItemMap(config: Map<*, *>) {
     }
 
     init {
-        val key = config[KEY_TYPE]
+        val key = config[KEY_TYPE] as String?
         if (key == null || key == "minecraft") {
             val materialConfig = config[KEY_MATERIAL]
                 ?: throw Exception("Material is not allowed to be empty.");
@@ -46,7 +45,10 @@ class ItemMap(config: Map<*, *>) {
             item.itemMeta = meta;
             this.item = item;
         } else {
-            this.item = ModuleConfig(ModuleType.ITEM_PROVIDER, config).get(config)
+            val provider = ModuleManager.getProvider(key)
+            if (provider != null) {
+                this.item = provider.get(config)
+            }
         }
     }
 }

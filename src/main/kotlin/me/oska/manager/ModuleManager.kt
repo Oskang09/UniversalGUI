@@ -4,10 +4,7 @@ import me.oska.UniversalGUI
 import me.oska.extension.CommandModule
 import me.oska.extension.ItemstackModule
 import me.oska.extension.VaultModule
-import me.oska.module.Module
-import me.oska.module.ModuleInformation
-import me.oska.module.ModuleNotSupported
-import me.oska.module.ModuleType
+import me.oska.module.*
 import java.io.File
 import java.net.URL
 import java.net.URLClassLoader
@@ -15,6 +12,7 @@ import java.util.jar.JarFile
 
 object ModuleManager {
     private var modules: MutableMap<String, ModuleInformation> = mutableMapOf();
+    private var providers: MutableMap<String, ItemProvider> = mutableMapOf()
 
     fun initialize() {
         FileManager.loopFiles(UniversalGUI.getModuleFolder()) {
@@ -30,8 +28,16 @@ object ModuleManager {
         return modules[name]!!.supportParallel();
     }
 
+    fun getProvider(name: String): ItemProvider? {
+        return providers[name]
+    }
+
     fun getModule(name: String, type: ModuleType, setting: Map<*, *>): Module? {
         return modules[name]?.getModule(type, setting);
+    }
+
+    fun registerItemProvider(provider: ItemProvider) {
+        providers[provider.key()] = provider
     }
 
     fun registerPluginModule(module: ModuleInformation) {
