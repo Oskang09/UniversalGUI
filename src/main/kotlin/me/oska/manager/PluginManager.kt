@@ -19,7 +19,6 @@ object PluginManager {
         isPlaceholderSupported = UniversalGUI.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         pluginConfig = PluginConfig(Json(UniversalGUI.getConfigFile()));
-        ModuleManager.initialize();
         ShopManager.initialize();
 
         UniversalGUI.getInstance().getCommand("ugui")?.setExecutor(CommandListener());

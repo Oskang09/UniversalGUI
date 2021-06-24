@@ -81,7 +81,9 @@ class UniversalGUI: JavaPlugin() {
             saveResource("config.json", false)
         }
 
-        me.oska.manager.PluginManager.onStart();
+        Bukkit.getScheduler().runTask(this) { _ ->
+            me.oska.manager.PluginManager.onStart();
+        }
     }
 
     override fun onDisable() {

@@ -1,20 +1,11 @@
 package me.oska.manager
 
 import me.oska.UniversalGUI
-import me.oska.extension.CommandModule
-import me.oska.extension.ItemstackModule
-import me.oska.extension.VaultModule
 import me.oska.module.*
 
 internal object ModuleManager {
     private var modules: MutableMap<String, ModuleInformation> = mutableMapOf();
     private var providers: MutableMap<String, ItemProvider> = mutableMapOf()
-
-    fun initialize() {
-        registerPluginModule(VaultModule())
-        registerPluginModule(ItemstackModule())
-        registerPluginModule(CommandModule())
-    }
 
     fun isSupportParallel(name: String): Boolean {
         return modules[name]!!.supportParallel();

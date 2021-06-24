@@ -38,7 +38,7 @@ class CommandListener: CommandExecutor {
         }
 
         if (args.size == 2 && args[0] == "open"&& sender is Player) {
-            return ShopManager.displayShop(sender, args[0]);
+            return ShopManager.displayShop(sender, args[1]);
         }
 
         if (args.size == 3 && args[0] == "reload") {

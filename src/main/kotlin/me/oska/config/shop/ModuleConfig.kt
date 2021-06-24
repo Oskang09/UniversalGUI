@@ -4,9 +4,7 @@ import me.oska.manager.ModuleManager
 import me.oska.module.Module
 import me.oska.module.ModuleNotExists
 import me.oska.module.ModuleType
-import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
@@ -39,7 +37,11 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
     fun check(player: Player): Boolean {
         if (this.module != null) {
-            return this.module!!.check(player);
+            val requirementPass = this.module!!.check(player)
+            if (!requirementPass) {
+                this.module!!.onFail(player)
+            }
+            return requirementPass;
         }
 
         if (this.error != null) {
@@ -55,6 +57,7 @@ class ModuleConfig(type: ModuleType, setting: Map<*, *>) {
 
         if (this.module != null) {
             this.module!!.action(player);
+            this.module!!.onSuccess(player)
         }
     }
 }
