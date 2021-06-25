@@ -59,7 +59,19 @@ class ShopConfig(file: FlatFile) {
             } else if (state.page  > 1 && this.isPrev) {
                 show(state.page  - 1, player)
             } else if (getStream(this.getModules()).allMatch { module -> module.check(player) }) {
-                getStream(this.getModules(), this.getModules().any { x -> !x.parallel }).forEach { module -> module.action(player) };
+                getStream(this.getModules(), this.getModules().any { x -> !x.parallel }).forEach { module -> module.action(player) }
+
+                val item = this@ShopConfig.items[slot]!!.item.item.clone()
+                if (PluginManager.isPlaceholderSupported) {
+                    if (item.itemMeta != null) {
+                        val meta = item.itemMeta!!
+                        var lores = meta.lore ?: mutableListOf()
+                        lores =  PlaceholderAPI.setPlaceholders(player, lores)
+                        meta.lore = lores
+                        item.itemMeta = meta
+                    }
+                }
+                state.inventory.setItem(slot, item)
             }
         }
     }
@@ -70,8 +82,8 @@ class ShopConfig(file: FlatFile) {
 
         slots.forEach {
             (slot, config) -> run {
+                val item = config.item.item.clone()
                 if (PluginManager.isPlaceholderSupported) {
-                    val item = config.item.item
                     if (item.itemMeta != null) {
                         val meta = item.itemMeta!!
                         var lores = meta.lore ?: mutableListOf()
@@ -80,7 +92,7 @@ class ShopConfig(file: FlatFile) {
                         item.itemMeta = meta
                     }
                 }
-                inv.setItem(slot, config.item.item)
+                inv.setItem(slot, item)
             }
         }
 
