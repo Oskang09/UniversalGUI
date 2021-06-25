@@ -51,14 +51,14 @@ class ApiConfig(config: FlatFileSection) {
 
         val stream: InputStream = http.get();
         val shop = when (format) {
-            "json" -> ShopConfig(Json(name, UniversalGUI.getApiPath().path, stream))
-            "yaml" -> ShopConfig(Yaml(name, UniversalGUI.getApiPath().path, stream))
-            "toml" -> ShopConfig(Toml(name, UniversalGUI.getApiPath().path, stream))
+            "json" -> Json(name, UniversalGUI.getApiPath().path, stream)
+            "yaml" -> Yaml(name, UniversalGUI.getApiPath().path, stream)
+            "toml" -> Toml(name, UniversalGUI.getApiPath().path, stream)
             else -> null
         }
 
         if (shop != null) {
-            ShopManager.updateShop(shop);
+            ShopManager.registerApiShop(shop)
         }
     }
 }

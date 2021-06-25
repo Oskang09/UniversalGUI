@@ -73,9 +73,11 @@ class ShopConfig(file: FlatFile) {
                 if (PluginManager.isPlaceholderSupported) {
                     val item = config.item.item
                     if (item.itemMeta != null) {
-                        var lores = item.itemMeta?.lore ?: mutableListOf()
+                        val meta = item.itemMeta!!
+                        var lores = meta.lore ?: mutableListOf()
                         lores =  PlaceholderAPI.setPlaceholders(player, lores)
-                        item.itemMeta?.lore = lores
+                        meta.lore = lores
+                        item.itemMeta = meta
                     }
                 }
                 inv.setItem(slot, config.item.item)

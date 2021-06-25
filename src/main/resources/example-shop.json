@@ -1,54 +1,49 @@
 {
-  "title": "Test",
+  "id": "mob",
+  "title": "§f[§5商店§f] §e怪物商店",
   "row": 6,
-  "message": {
-    "const": "You have %money%",
-    "fulfilled": "You have enough money",
-    "rejected": "You have not enough money."
-  },
   "activator": {
-    "citizens": {
-      "npc": 1,
-      "permission": ""
-    },
-    "interact": {
-      "item": null,
-      "permission": ""
-    },
     "command": {
-      "cmd": "test",
-      "permission": ""
+      "cmd": "mob"
     }
   },
   "items": {
-    "1": {
+    "0": {
       "item": {
-        "material": "AIR",
-        "name": "123",
-        "data": 1,
-        "amount": 11,
+        "type": "minecraft",
+        "material": "ENDER_PEARL",
+        "amount": 16,
+        "name": "§f[§7任务§f] §a害怕下雨的末影人",
         "lore": [
-          "123"
+          "§7§l --- §f§l任务需求 §7§l--- ",
+          "§71. §f16 个末影珍珠",
+          "§72. §f12 小时冷却时间",
+          "",
+          "§7§l --- §f§l任务奖励 §7§l--- ",
+          "§71. §f50 金钱",
+          "",
+          "§7上次完成时间 - §f%ec_cooldown_display_mob_quest_1%"
         ]
       },
-      "requirement": [
-        {
-          "module": "vault",
-          "display": ""
-        },
+      "requirements": [
         {
           "module": "item",
-          "display": ""
+          "item": {
+            "type": "minecraft",
+            "material": "ENDER_PEARL",
+            "amount": 16
+          }
+        },
+        {
+          "module": "ec-cooldown",
+          "id": "mob_quest_1",
+          "second": 43200
         }
       ],
       "rewards": [
         {
           "module": "vault",
-          "display": ""
-        },
-        {
-          "module": "item",
-          "display": ""
+          "money": 50.0
         }
       ]
     }

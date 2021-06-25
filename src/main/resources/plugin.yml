@@ -1,6 +1,6 @@
 main: me.oska.UniversalGUI
 name: UniversalGUI
-version: 3.0.5
+version: 3.0.6
 author: Oska
 api-version: 1.16
 description: Customize User Interface via Configuration and Extensible Modules.

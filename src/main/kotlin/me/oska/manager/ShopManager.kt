@@ -1,6 +1,7 @@
 package me.oska.manager
 
 import de.leonhard.storage.Json
+import de.leonhard.storage.internal.FlatFile
 import me.oska.UniversalGUI
 import me.oska.config.ApiConfig
 import me.oska.config.shop.ShopConfig
@@ -11,25 +12,29 @@ import java.io.File
 
 object ShopManager {
 
-    private var shops: MutableList<ShopConfig> = mutableListOf();
-    private var apiShop: MutableMap<String, ApiConfig> = mutableMapOf();
+    private var shopFiles: MutableMap<String, FlatFile> = mutableMapOf()
+    private var shops: MutableMap<String, ShopConfig> = mutableMapOf()
+    private var apiShop: MutableMap<String, ApiConfig> = mutableMapOf()
 
     fun initialize() {
         FileManager.loopFiles(UniversalGUI.getShopFolder()) {
-            registerShop(it)
+            registerShop(Json(it.nameWithoutExtension, it.parent))
         }
     }
 
     fun shopListMessages(): List<String> {
-        return listOf(
-            *shops.map { "§f[§5LOCAL§f] §f" + it.id }.toTypedArray(),
-            *apiShop.map { "§f[§5API§f] §f" + it.key + " - " + it.value.endpoint }.toTypedArray()
-        )
+        return shops.map { "§f[§5LOCAL§f] §f" + it.key }.toList()
     }
 
-    private fun registerShop(file: File) {
-        val shop = ShopConfig(Json(file.nameWithoutExtension, file.parent));
-        shops.add(shop);
+    private fun registerShop(file: FlatFile) {
+        val shop = ShopConfig(file);
+        shops[shop.id] = shop
+        shopFiles[shop.id] = file
+    }
+
+    fun registerApiShop(file: FlatFile) {
+        val shop = ShopConfig(file);
+        shops[shop.id] = shop
     }
 
     fun registerApiShop(key: String, config: ApiConfig) {
@@ -47,25 +52,14 @@ object ShopManager {
     }
 
     fun reloadShop(id: String): Boolean {
-        val shop = shops.firstOrNull { shop -> shop.id == id }
-        if (shop != null) {
-            updateShop(shop);
-            return true;
-        }
-        return false;
-    }
-
-    fun updateShop(config: ShopConfig) {
-        val index = shops.indexOfFirst { shop -> shop.id == config.id };
-        if (index == -1) {
-            shops.add(config);
-        } else {
-            shops[index] = config;
-        }
+        val file = shopFiles[id] ?: return false
+        file.forceReload()
+        registerShop(file)
+        return true
     }
 
     fun displayShop(player: Player, npc: Int): Boolean {
-        val shop = shops.firstOrNull { shop -> shop.activator.canActive(npc) };
+        val shop = shops.values.singleOrNull { shop -> shop.activator.canActive(npc) };
         if (shop != null) {
             shop.show(1, player);
             return true;
@@ -74,7 +68,7 @@ object ShopManager {
     }
 
     fun displayShop(player: Player, cmd: String): Boolean {
-        val shop = shops.firstOrNull { shop -> shop.activator.canActive(cmd) };
+        val shop = shops.values.singleOrNull  { shop -> shop.activator.canActive(cmd) };
         if (shop != null) {
             shop.show(1, player);
             return true;
@@ -83,7 +77,7 @@ object ShopManager {
     }
 
     fun displayShop(player: Player, item: ItemStack): Boolean {
-        val shop = shops.firstOrNull { shop -> shop.activator.canActive(item) };
+        val shop = shops.values.singleOrNull  { shop -> shop.activator.canActive(item) };
         if (shop != null) {
             shop.show(1, player);
             return true;

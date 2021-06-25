@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URI
 
 group = "me.oska"
-version = "3.0.5"
+version = "3.0.6"
 
 val kotlinVersion = "1.5.10"
 
