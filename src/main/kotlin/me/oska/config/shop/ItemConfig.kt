@@ -28,7 +28,7 @@ class ItemConfig(config: FlatFileSection) {
         @Suppress("UNCHECKED_CAST")
         val requirements: List<Map<*, *>> = config.getList(KEY_REQUIREMENT) as MutableList<Map<*, *>>;
         if (requirements.isNotEmpty()) {
-            requirements.parallelStream().forEach {
+            requirements.forEach {
                 requirement -> this.requirements.add(ModuleConfig(ModuleType.REQUIREMENT, requirement))
             }
         }
@@ -36,7 +36,7 @@ class ItemConfig(config: FlatFileSection) {
         @Suppress("UNCHECKED_CAST")
         val rewards: List<Map<*, *>> = config.getList(KEY_REWARD) as MutableList<Map<*, *>>
         if (rewards.isNotEmpty()) {
-            rewards.parallelStream().forEach {
+            rewards.forEach {
                 reward -> this.rewards.add(ModuleConfig(ModuleType.REWARD, reward))
             }
         }
